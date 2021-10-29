@@ -25,11 +25,9 @@
 						<p th:if="${error}" class="error" >Erro ao fazer Cadastro</p>
 						<form th:action="@{/cadastro}" th:object="${formUser}" method="POST">
 
-							<input id="usuario" placeholder="User" required type="text"
-								th:field="*{usuario}"> <input id="senha"
-								placeholder="Password" required type="password"
-								th:field="*{senha}"> <input id="senha2"
-								placeholder="Repeat Password" required type="password">
+								<input id="usuario" placeholder="User" required type="text" th:field="*{usuario}"> 
+								<input id="senha" placeholder="Password" required type="password" th:field="*{senha}"> 
+								<input id="senha2" placeholder="Repeat Password" required type="password" th:field="*{senha2}">
 							<input type="submit" name="" value="Login" onsubmit="">
 
 						</form>
@@ -51,7 +49,7 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 	
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		$(document).on('submit', 'form', function(e) {
 			e.preventDefault();
 			pass1 = $("#senha").val();
@@ -63,8 +61,8 @@
 					alert("Senhas não são iguais")
 					return false;
 			}
-		});
-	</script>
+		}); 
+	</script> -->
 </body>
 
 

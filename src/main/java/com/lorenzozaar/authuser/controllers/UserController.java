@@ -17,7 +17,11 @@ public class UserController {
 
 	@Autowired
 	private UserRepo repo;
+	public int logado;
 	
+	public int validatieLog (int logado) {
+		return logado = 1;
+	}
 	
 	@PostMapping("/")
 	public String validateLogin(@ModelAttribute(name = "formUser") @Valid User user, Model model) {
@@ -36,19 +40,23 @@ public class UserController {
 	}
 	
 	@PostMapping("/cadastro")
-	public String register(@ModelAttribute(name = "formUser") @Valid User user, Model model) {
+	public String register(@ModelAttribute(name = "formUser") @Valid User user,String senha, Model model) {
 		User queryUser = repo.findByUsuario(user.getUsuario());
-		if (queryUser != null) {
-			model.addAttribute("error","Nome de usuario jão utilizado");
-			System.out.println(queryUser);
+		if (queryUser == null) {
+			
+			if (user.getSenha() == user.getSenha2()){
+				user.setSenha(md5Factory.mdfy(user.getSenha()));
+				repo.save(user);
+				return "redirect:/";
+			} else {
+				model.addAttribute("error", "As senhas não coincidem");
+				return "cadastro";
+			}
+		} else {
+			model.addAttribute("error", "Usuário ja mamado");
 			return "cadastro";
-		}else {
-			user.setSenha(md5Factory.mdfy(user.getSenha()));
-			
-			repo.save(user);
-			
-			return "redirect:index";
 		}
+		
 		
 	}
 	

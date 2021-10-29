@@ -11,10 +11,8 @@ public class viewController {
 	
 
 	@GetMapping("/flappy")
-	public String getGame(Model model) {
-
-		
-		return "flappy";
+	public String getGame() {
+		return "redirect:/";
 	}
 	
 	@GetMapping("/")

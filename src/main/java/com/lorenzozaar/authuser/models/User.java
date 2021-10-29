@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
@@ -26,4 +27,7 @@ public class User {
 	@NotBlank
 	@NonNull
 	private String senha;
+	
+	@Transient
+	private String senha2;
 }
