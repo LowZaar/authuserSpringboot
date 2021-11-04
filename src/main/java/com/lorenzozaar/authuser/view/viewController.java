@@ -30,14 +30,14 @@ public class viewController {
 		return "cadastro";
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/update")
 	public String updatePass(Model model) {
 		model.addAttribute("Pwdform", new User());
 		
 		return "flappy";
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/delete")
 	public String deleteUser(Model model) {
 		model.addAttribute("deleteForm", new User());
 		
