@@ -30,6 +30,17 @@ public class viewController {
 		return "cadastro";
 	}
 	
+	@GetMapping("/")
+	public String updatePass(Model model) {
+		model.addAttribute("Pwdform", new User());
+		
+		return "flappy";
+	}
 	
-	
+	@GetMapping("/")
+	public String deleteUser(Model model) {
+		model.addAttribute("deleteForm", new User());
+		
+		return "index";
+	}
 }

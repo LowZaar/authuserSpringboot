@@ -1,5 +1,7 @@
 package com.lorenzozaar.authuser.controllers;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,6 @@ public class UserController {
 	public String register(@ModelAttribute(name = "formUser") @Valid User user,String senha, Model model) {
 		User queryUser = repo.findByUsuario(user.getUsuario());
 		if (queryUser == null) {
-			
 			if (user.getSenha() == user.getSenha2()){
 				user.setSenha(md5Factory.mdfy(user.getSenha()));
 				repo.save(user);
@@ -57,10 +58,37 @@ public class UserController {
 			return "cadastro";
 		}
 		
-		
 	}
 	
+	@PostMapping("/updatePwd")	
+	public String updatePwd(@ModelAttribute(name = "Pwdform") @Valid User user, String senha1, String senha2, Model model){
+		model.addAttribute("Pwdform", new User());
+		Optional<User> queryUser = repo.findById(user.getId());
+		if (queryUser.isPresent()) {
+			if (queryUser.get().getSenha() == md5Factory.mdfy(senha1)) {
+				queryUser.get().setSenha(md5Factory.mdfy(senha2));
+				
+				repo.save(queryUser.get());
+				
+				return "flappy";
+			}
+		}else {
+			model.addAttribute("error","Senha atual não é a informada");
+			return "flappy";
+		}
+		return "flappy";
+	}
 
+	@PostMapping ("/delete")
+	public String deleteUser(Model model, @ModelAttribute(name = "deleteForm") @Valid User user) {
+		model.addAttribute("deleteForm", new User());
+		Optional<User> queryUser = repo.findById(user.getId());
+		
+		repo.delete(queryUser.get());
+		
+		return "index";
+	}
+	
 //	public void deleteUser(@RequestBody @Valid User user) {
 //		repo.deleteById(user.getId());
 //	}

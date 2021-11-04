@@ -13,6 +13,22 @@
     <p th:text="${id}">
     <p th:text="${user}">
     <p th:text="${senha}">
+ 	
+ 	<form th:action="@{/updatePwd}" th:object="${Pwdform}" method="POST">
+ 	
+ 	<input type="text" placeholder="Senha Antiga" id="senhaOld" th:field="*{senha1}">
+ 	<input type="text" placeholder="Nova Senha" id="senhaNew" th:field="*{senha2}">
+ 	<input type="hidden" value="${id}" th:field="*{id}">
+ 	<input type="hidden" value="${user}" th:field="*{user}">
+ 	<input type="hidden" value="${senha}" th:field="*{senha}">
+ 	<button type="submit">Alterar Senha</button>
+ 	</form>
+ 	
+ 	<form th:action="@{/delete}" th:object="${deleteForm}" method="POST">
+ 	
+ 	<button type="submit">Deletar Usuario</button>
+ 	</form>
+ 	
     <div wm-flappy></div>
     <script src="js/game.js"></script>
 </body>
