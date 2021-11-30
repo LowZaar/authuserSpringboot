@@ -37,10 +37,4 @@ public class viewController {
 		return "flappy";
 	}
 	
-	@GetMapping("/delete")
-	public String deleteUser(Model model) {
-		model.addAttribute("deleteForm", new User());
-		
-		return "index";
-	}
 }

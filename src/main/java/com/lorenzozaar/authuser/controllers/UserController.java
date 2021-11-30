@@ -3,11 +3,14 @@ package com.lorenzozaar.authuser.controllers;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.lorenzozaar.authuser.models.User;
@@ -79,15 +82,14 @@ public class UserController {
 		return "flappy";
 	}
 
-	@PostMapping ("/delete")
-	public String deleteUser(Model model, @ModelAttribute(name = "deleteForm") @Valid User user) {
-		model.addAttribute("deleteForm", new User());
-		Optional<User> queryUser = repo.findById(user.getId());
-		
-		repo.delete(queryUser.get());
-		
-		return "index";
-	}
+//	@DeleteMapping("/delete/{id}")
+//	public String deleteUser(@PathVariable("id") int id) {
+//		Optional<User> queryUser = repo.findById(id);
+//		
+//		repo.delete(queryUser.get());
+//		
+//		return "index";
+//	}
 	
 //	public void deleteUser(@RequestBody @Valid User user) {
 //		repo.deleteById(user.getId());
@@ -112,7 +114,6 @@ public class UserController {
 //		mv.setViewName("index");
 //		return mv;
 //	}
-//	
-//	
+
 
 }
