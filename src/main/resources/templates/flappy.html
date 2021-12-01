@@ -2,45 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset='utf-8'>
-<title>Flappy Foca</title>
-<link rel='stylesheet' href='estilo.css'>
-<link rel='stylesheet' href='css/flappy.css'>
+	<meta charset='utf-8'>
+	<title>Flappy Foca</title>
+	<link rel='stylesheet' href='estilo.css'>
+	<link rel='stylesheet' href='css/flappy.css'>
 </head>
 
 <body class="conteudo">
 	<h1>Flappy Foca</h1>
-	<p th:text="${id}" id="id">
-	<p th:text="${user}">
-	<p th:text="${senha}"></p>
-
-
+	<p th:text="${id}" style="display: none;" id="id">
+	<p th:text="${user}" id="usuario">
+	<p th:text="${senha}" style="display: none;">
 	<form>
-		<input type="button" id="delete" value="Deletar Usuario">
+		<input type="button" id="delete" value="Deletar Usuario"> <input type="button" id="update" value="Atualizar Senha">
 	</form>
 
 
 	<div wm-flappy></div>
 	<script src="js/game.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.js"
-		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-		crossorigin="anonymous"></script>
-	<script type="text/javascript">
-// 		var id = $('#id').text();
-// 		$("#delete").click(function() {
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
-// 			$.ajax({
-// 				url : "delete/" + id,
-// 				type : "DELETE",
-// 				success : function(result) {
-// 					alert("pinto")
-// 				}
-// 			})
-// 		})
-			
+	<script type="text/javascript">
+		var id = $('#id').text();
+		var usuario = $("#usuario").text();
+		$("#delete").click(function() {
+
+			$.ajax({
+				url: "delete/" + id,
+				type: "DELETE",
+				success: setTimeout(function(result) {
+					window.location.href = "/"
+
+				}, 200)
+			})
+		})
+
+		$("#update").click(function() {
+			var senha = promp("Digite aqui a sua senha")
+			if (senha != null) {
+				$.ajax({
+					url: "/update",
+					type: "PUT",
+					data: {
+						"id": id,
+						"usuario": usuario,
+						"senha": senha
+					},
+					success: setTimeout(function(result) {
+						window.location.href = "/";
+					}, 2000)
+				})
+			}
+		})
 	</script>
 
 
-
 </body>
+
 </html>

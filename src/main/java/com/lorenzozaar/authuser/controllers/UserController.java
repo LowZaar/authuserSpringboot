@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.lorenzozaar.authuser.models.User;
 import com.lorenzozaar.authuser.models.md5Factory;
@@ -23,11 +24,11 @@ public class UserController {
 	@Autowired
 	private UserRepo repo;
 	public int logado;
-	
-	public int validatieLog (int logado) {
+
+	public int validatieLog(int logado) {
 		return logado = 1;
 	}
-	
+
 	@PostMapping("/")
 	public String validateLogin(@ModelAttribute(name = "formUser") @Valid User user, Model model) {
 		User queryUser = repo.findByUsuarioAndSenha(user.getUsuario(), md5Factory.mdfy(user.getSenha()));
@@ -35,85 +36,57 @@ public class UserController {
 			model.addAttribute("id", queryUser.getId());
 			model.addAttribute("user", queryUser.getUsuario());
 			model.addAttribute("senha", queryUser.getSenha());
-			
+
 			return "flappy";
-		}else {
-			
+		} else {
+
 			return "index";
 		}
-		
+
 	}
-	
+
 	@PostMapping("/cadastro")
-	public String register(@ModelAttribute(name = "formUser") @Valid User user,String senha, Model model) {
+	public String register(@ModelAttribute(name = "formUser") @Valid User user, Model model) {
+		System.out.println(user);
+
 		User queryUser = repo.findByUsuario(user.getUsuario());
 		if (queryUser == null) {
-			if (user.getSenha() == user.getSenha2()){
+			String senha = user.getSenha();
+			String senha2 = user.getSenha2();
+			
+			System.out.println(senha + "||" + senha2 );
+			if (senha.equals(senha2)) {
+				
+				System.out.println(user.getSenha());
+				System.out.println(user.getSenha2());
 				user.setSenha(md5Factory.mdfy(user.getSenha()));
 				repo.save(user);
-				return "redirect:/";
-			} else {
-				model.addAttribute("error", "As senhas não coincidem");
-				return "cadastro";
+				return "index";
 			}
-		} else {
-			model.addAttribute("error", "Usuário ja mamado");
-			return "cadastro";
 		}
-		
+		return "cadastro";
+
 	}
-	
-	@PostMapping("/updatePwd")	
-	public String updatePwd(@ModelAttribute(name = "Pwdform") @Valid User user, String senha1, String senha2, Model model){
-		model.addAttribute("Pwdform", new User());
-		Optional<User> queryUser = repo.findById(user.getId());
-		if (queryUser.isPresent()) {
-			if (queryUser.get().getSenha() == md5Factory.mdfy(senha1)) {
-				queryUser.get().setSenha(md5Factory.mdfy(senha2));
-				
-				repo.save(queryUser.get());
-				
-				return "flappy";
-			}
-		}else {
-			model.addAttribute("error","Senha atual não é a informada");
-			return "flappy";
-		}
+
+	@DeleteMapping("/delete/{id}")
+	public String deleteUser(@PathVariable("id") int id) {
+		Optional<User> queryUser = repo.findById(id);
+		
+		repo.delete(queryUser.get());
+		
+		return "index";
+	}
+
+	@PutMapping("/update")
+	public String updateUser(@Valid User user) {
+		String senha = md5Factory.mdfy(user.getSenha());
+		user.setSenha(senha);		
+		System.out.println(user);
+		
+		repo.save(user);
+		
 		return "flappy";
 	}
-
-//	@DeleteMapping("/delete/{id}")
-//	public String deleteUser(@PathVariable("id") int id) {
-//		Optional<User> queryUser = repo.findById(id);
-//		
-//		repo.delete(queryUser.get());
-//		
-//		return "index";
-//	}
 	
-//	public void deleteUser(@RequestBody @Valid User user) {
-//		repo.deleteById(user.getId());
-//	}
-//
-//	public User alterUser(@RequestBody @Valid User user) {
-//		User queryUser = repo.findByUsuarioAndSenha(user.getUsuario(), md5Factory.mdfy(user.getSenha()));
-//
-//		if (queryUser != null) {
-//			queryUser.setSenha(user.getSenha());
-//			repo.save(queryUser);
-//			return queryUser;
-//		} else {
-//			return null;
-//		}
-//
-//	}	
-//	
-//	@GetMapping("/")
-//	public ModelAndView logar() {
-//		ModelAndView mv = new ModelAndView();
-//		mv.setViewName("index");
-//		return mv;
-//	}
-
 
 }
